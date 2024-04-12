@@ -7,31 +7,21 @@ spec:
   type: Java
   sparkVersion: 3.5.1
   mode: cluster
-  image: hello-spark:third
-  mainClass: Main
+  image: hello-spark:vo
+  mainClass: org.example.Main
   mainApplicationFile: local:///app/work/application.jar
-  imagePullPolicy: IfNotPresent
-  sparkConf:
-    "spark.driver.extraJavaOptions": "-Divy.cache.dir=/tmp -Divy.home=/tmp"
-    "spark.driver.memory": "512m"
   deps:
     packages:
       - org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1
+  sparkConf:
+    "spark.driver.extraJavaOptions": "-Divy.cache.dir=/tmp -Divy.home=/tmp"
   driver:
     memory: 512m
     labels:
       version: 3.5.1
     serviceAccount: sparksubmit
-    env:
-      - name: KAFKA_USER
-        value: "user1"
-      - name: KAFKA_PASS
-        valueFrom:
-          secretKeyRef:
-            name: kafka-user-passwords
-            key: client-passwords
   executor:
     memory: 512m
-    instances: 2
+    instances: 3
     labels:
       version: 3.5.1
